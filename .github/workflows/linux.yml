@@ -75,6 +75,7 @@ jobs:
             postgresql-server-dev-${{ matrix.postgresql-version }}
           sudo systemctl start postgresql
           sudo -u postgres -H psql -c "CREATE ROLE ${USER} SUPERUSER LOGIN;"
+          sudo systemctl status postgresql
       - name: Disable WAL tests
         if: |
           matrix.postgresql-version == '9.5'
@@ -89,6 +90,7 @@ jobs:
           echo $CPATH
           export CPATH=$CPATH:/usr/include/postgresql/${{ matrix.postgresql-version }}/server/
           echo $CPATH
+          sudo systemctl status postgresql
           NEED_SUDO=yes test/run-sql-test.sh
       - name: Show diff
         if: failure()
