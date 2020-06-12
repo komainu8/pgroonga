@@ -84,6 +84,8 @@ jobs:
           rm -rf sql/function/set-writable/
       - name: Run regression test
         run: |
+          ls -al /usr/include/postgresql/${{ matrix.postgresql-version }}/server/
+          ls -al /usr/include/postgresql/
           NEED_SUDO=yes test/run-sql-test.sh
       - name: Show diff
         if: failure()
