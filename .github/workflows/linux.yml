@@ -91,7 +91,9 @@ jobs:
           export CPATH=$CPATH:/usr/include/postgresql/${{ matrix.postgresql-version }}/server/
           echo $CPATH
           sudo systemctl status postgresql
+          echo $libdir
           NEED_SUDO=yes test/run-sql-test.sh
+          echo $libdir
       - name: Show diff
         if: failure()
         run: |
