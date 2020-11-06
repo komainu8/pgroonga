@@ -99,7 +99,7 @@ build_script:
       -DCMAKE_INSTALL_PREFIX="..\\pgsql"
       -DPGRN_POSTGRESQL_VERSION_MAJOR=%POSTGRESQL_VERSION_MAJOR%
       -DGRN_WITH_MRUBY=yes
-  - set CMAKE_BUILD_PARALLEL_LEVEL=4
+  - set CMAKE_BUILD_PARALLEL_LEVEL=2
   - cmake --build . --config RelWithDebInfo
   - cmake --build . --config RelWithDebInfo --target install
   - cmake --build . --config RelWithDebInfo --target package
