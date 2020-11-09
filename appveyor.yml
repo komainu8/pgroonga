@@ -6,7 +6,7 @@ environment:
 #      ARCH: x86
 #      POSTGRESQL_VERSION: 9.6.19-1
 #      POSTGRESQL_VERSION_MAJOR: 9.6
-    - VS_VERSION: 12
+    - VS_VERSION: 14
       ARCH: x64
       POSTGRESQL_VERSION: 9.6.19-1
       POSTGRESQL_VERSION_MAJOR: 9.6
@@ -14,7 +14,7 @@ environment:
 #      ARCH: x86
 #      POSTGRESQL_VERSION: 10.14-1
 #      POSTGRESQL_VERSION_MAJOR: 10
-    - VS_VERSION: 12
+    - VS_VERSION: 14
       ARCH: x64
       POSTGRESQL_VERSION: 10.14-1
       POSTGRESQL_VERSION_MAJOR: 10
@@ -99,7 +99,7 @@ build_script:
       -DCMAKE_INSTALL_PREFIX="..\\pgsql"
       -DPGRN_POSTGRESQL_VERSION_MAJOR=%POSTGRESQL_VERSION_MAJOR%
       -DGRN_WITH_MRUBY=yes
-  - set CMAKE_BUILD_PARALLEL_LEVEL=2
+  - set CMAKE_BUILD_PARALLEL_LEVEL=4
   - cmake --build . --config RelWithDebInfo
   - cmake --build . --config RelWithDebInfo --target install
   - cmake --build . --config RelWithDebInfo --target package
