@@ -197,6 +197,10 @@ jobs:
           }
           ruby test\prepare.rb > schedule
           $Env:PG_REGRESS_DIFF_OPTS = "-u"
+          ..\pgsql\lib\pgxs\src\test\regress\pg_regress --help
+          pwd
+          ls
+          ls ..\pgsql\lib\pgxs\src\test\regress\
           ..\pgsql\lib\pgxs\src\test\regress\pg_regress `
             --bindir=..\pgsql\bin `
             --encoding=${Env:PGROONGA_TEST_ENCODING} `
