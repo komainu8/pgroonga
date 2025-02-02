@@ -3147,14 +3147,6 @@ BEGIN
 				OPERATOR 4 >=,
 				OPERATOR 5 >;
 
-		CREATE OPERATOR CLASS pgroonga.int2_ops FOR TYPE int2
-			USING pgroonga AS
-				OPERATOR 1 <,
-				OPERATOR 2 <=,
-				OPERATOR 3 =,
-				OPERATOR 4 >=,
-				OPERATOR 5 >;
-
 		CREATE OPERATOR CLASS pgroonga.int4_ops FOR TYPE int4
 			USING pgroonga AS
 				OPERATOR 1 <,

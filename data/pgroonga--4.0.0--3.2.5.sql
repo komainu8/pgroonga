@@ -34,3 +34,11 @@ CREATE OPERATOR CLASS pgroonga.varchar_ops FOR TYPE varchar
         OPERATOR 3 = (text, text),
         OPERATOR 4 >= (text, text),
         OPERATOR 5 > (text, text);
+
+CREATE OPERATOR CLASS pgroonga.int2_ops FOR TYPE int2
+    USING pgroonga AS
+        OPERATOR 1 <,
+        OPERATOR 2 <=,
+        OPERATOR 3 =,
+        OPERATOR 4 >=,
+        OPERATOR 5 >;
