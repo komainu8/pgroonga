@@ -26,3 +26,10 @@ CREATE OPERATOR CLASS pgroonga.varchar_full_text_search_ops FOR TYPE varchar
         OPERATOR 12 &@,
         OPERATOR 13 &?, -- For backward compatibility
         OPERATOR 28 &@~;
+
+CREATE OPERATOR CLASS pgroonga.text_regexp_ops_v2 FOR TYPE text
+    USING pgroonga AS
+        OPERATOR 6 ~~,
+        OPERATOR 7 ~~*,
+        OPERATOR 10 @~, -- For backward compatibility
+        OPERATOR 22 &~;
