@@ -3228,13 +3228,6 @@ BEGIN
 				OPERATOR 15 &` (jsonb, text),
 				OPERATOR 28 &@~ (jsonb, text);
 
-		CREATE OPERATOR CLASS pgroonga.text_regexp_ops FOR TYPE text
-			USING pgroonga AS
-				OPERATOR 6 ~~,
-				OPERATOR 7 ~~*,
-				OPERATOR 10 @~,
-				OPERATOR 22 &~;
-
 		CREATE OPERATOR CLASS pgroonga.varchar_regexp_ops FOR TYPE varchar
 			USING pgroonga AS
 				OPERATOR 10 @~,
