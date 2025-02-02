@@ -18,3 +18,11 @@ CREATE OPERATOR CLASS pgroonga.text_array_full_text_search_ops FOR TYPE text[]
         OPERATOR 12 &@ (text[], text),
         OPERATOR 13 &? (text[], text), -- For backward compatibility
         OPERATOR 28 &@~ (text[], text);
+
+CREATE OPERATOR CLASS pgroonga.int8_ops FOR TYPE int8
+    USING pgroonga AS
+        OPERATOR 1 <,
+        OPERATOR 2 <=,
+        OPERATOR 3 =,
+        OPERATOR 4 >=,
+        OPERATOR 5 >;
