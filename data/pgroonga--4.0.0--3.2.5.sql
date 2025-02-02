@@ -26,3 +26,12 @@ CREATE OPERATOR CLASS pgroonga.varchar_full_text_search_ops FOR TYPE varchar
         OPERATOR 12 &@,
         OPERATOR 13 &?, -- For backward compatibility
         OPERATOR 28 &@~;
+
+CREATE OPERATOR CLASS pgroonga.jsonb_ops FOR TYPE jsonb
+    USING pgroonga AS
+        OPERATOR 9 @@ (jsonb, text),
+        OPERATOR 11 @>,
+        OPERATOR 12 &@ (jsonb, text),
+        OPERATOR 13 &? (jsonb, text), -- For backward compatibility
+        OPERATOR 15 &` (jsonb, text),
+        OPERATOR 28 &@~ (jsonb, text);
