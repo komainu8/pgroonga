@@ -2,16 +2,16 @@ CREATE TABLE ids (
   id real
 );
 
-INSERT INTO ids VALUES (2);
-INSERT INTO ids VALUES (7);
-INSERT INTO ids VALUES (6);
-INSERT INTO ids VALUES (4);
-INSERT INTO ids VALUES (5);
-INSERT INTO ids VALUES (8);
-INSERT INTO ids VALUES (1);
-INSERT INTO ids VALUES (10);
-INSERT INTO ids VALUES (3);
-INSERT INTO ids VALUES (9);
+INSERT INTO ids VALUES (2.1);
+INSERT INTO ids VALUES (7.1);
+INSERT INTO ids VALUES (6.1);
+INSERT INTO ids VALUES (4.1);
+INSERT INTO ids VALUES (5.1);
+INSERT INTO ids VALUES (8.1);
+INSERT INTO ids VALUES (1.1);
+INSERT INTO ids VALUES (10.1);
+INSERT INTO ids VALUES (3.1);
+INSERT INTO ids VALUES (9.1);
 
 CREATE INDEX grnindex ON ids USING pgroonga (id pgroonga_float4_ops);
 
@@ -19,9 +19,15 @@ SET enable_seqscan = off;
 SET enable_indexscan = on;
 SET enable_bitmapscan = off;
 
+EXPLAIN (COSTS OFF)
 SELECT id
   FROM ids
- WHERE id >= 3 AND id >= 5
+ WHERE id >= 3.1 AND id >= 5.1
+ ORDER BY id ASC;
+
+SELECT id
+  FROM ids
+ WHERE id >= 3.1 AND id >= 5.1
  ORDER BY id ASC;
 
 DROP TABLE ids;

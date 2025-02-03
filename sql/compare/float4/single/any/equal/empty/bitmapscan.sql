@@ -15,12 +15,12 @@ SET enable_bitmapscan = on;
 EXPLAIN (COSTS OFF)
 SELECT id
   FROM ids
- WHERE id = ANY(ARRAY[]::integer[])
+ WHERE id = ANY(ARRAY[]::real[])
  ORDER BY id ASC;
 
 SELECT id
   FROM ids
- WHERE id = ANY(ARRAY[]::integer[])
+ WHERE id = ANY(ARRAY[]::real[])
  ORDER BY id ASC;
 
 DROP TABLE ids;
