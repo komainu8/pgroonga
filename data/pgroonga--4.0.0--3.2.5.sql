@@ -152,3 +152,11 @@ CREATE OPERATOR CLASS pgroonga.text_term_search_ops_v2 FOR TYPE text
         OPERATOR 17 &^~,
         OPERATOR 20 &^| (text, text[]),
         OPERATOR 21 &^~| (text, text[]);
+
+CREATE FUNCTION pgroonga.command(groongaCommand text)
+        RETURNS text
+        AS 'MODULE_PATHNAME', 'pgroonga_command'
+        LANGUAGE C
+        VOLATILE
+        STRICT
+        PARALLEL SAFE;
