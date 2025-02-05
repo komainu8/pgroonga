@@ -14,3 +14,5 @@ DROP OPERATOR FAMILY pgroonga.timestamptz_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.jsonb_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.text_regexp_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.varchar_regexp_ops USING pgroonga;
+
+DROP FUNCTION pgroonga.table_name(indexName cstring);
