@@ -79,3 +79,9 @@ CREATE OPERATOR CLASS pgroonga.timestamp_ops FOR TYPE timestamp
         OPERATOR 3 =,
         OPERATOR 4 >=,
         OPERATOR 5 >;
+
+CREATE OPERATOR CLASS pgroonga.varchar_array_term_search_ops_v2
+    FOR TYPE varchar[]
+    USING pgroonga AS
+        OPERATOR 8 %% (varchar[], varchar), -- For backward compatibility
+        OPERATOR 23 &> (varchar[], varchar);
