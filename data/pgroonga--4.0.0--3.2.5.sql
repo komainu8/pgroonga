@@ -87,3 +87,9 @@ CREATE OPERATOR CLASS pgroonga.timestamptz_ops FOR TYPE timestamptz
         OPERATOR 3 =,
         OPERATOR 4 >=,
         OPERATOR 5 >;
+
+CREATE OPERATOR CLASS pgroonga.varchar_regexp_ops_v2 FOR TYPE varchar
+    USING pgroonga AS
+        OPERATOR 10 @~, -- For backward compatibility
+        OPERATOR 22 &~;
+

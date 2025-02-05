@@ -11,3 +11,4 @@ DROP OPERATOR FAMILY pgroonga.int4_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.int8_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.timestamp_ops USING pgroonga;
 DROP OPERATOR FAMILY pgroonga.timestamptz_ops USING pgroonga;
+DROP OPERATOR FAMILY pgroonga.varchar_regexp_ops_v2 USING pgroonga;
