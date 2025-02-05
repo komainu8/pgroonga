@@ -1,5 +1,6 @@
 -- Downgrade SQL
 
+-- Create operator classes
 /* v1 */
 CREATE OPERATOR CLASS pgroonga.text_full_text_search_ops FOR TYPE text
     USING pgroonga AS
@@ -108,3 +109,12 @@ CREATE OPERATOR CLASS pgroonga.varchar_regexp_ops FOR TYPE varchar
     USING pgroonga AS
         OPERATOR 10 @~,
         OPERATOR 22 &~;
+
+-- Create finctions
+CREATE FUNCTION pgroonga.score("row" record)
+    RETURNS float8
+    AS 'MODULE_PATHNAME', 'pgroonga_score'
+    LANGUAGE C
+    VOLATILE
+    STRICT
+    PARALLEL SAFE;
