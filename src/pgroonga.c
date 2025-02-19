@@ -54,7 +54,6 @@
 #include <nodes/nodeFuncs.h>
 #include <optimizer/optimizer.h>
 #include <pgstat.h>
-#include <stdbool.h>
 #include <storage/bufmgr.h>
 #include <storage/ipc.h>
 #include <storage/latch.h>
