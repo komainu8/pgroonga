@@ -6104,7 +6104,7 @@ PGrnSearchBuildConditionBinaryOperation(PGrnSearchData *data,
 }
 
 static void
-PGrnSearchBuildConditionMatchIn(ScanKey key)
+PGrnSearchSetMatchInStrategy(ScanKey key)
 {
 	// PostgreSQL 18 optimaize to "column &@ ANY (keyword1, keyword2, ...)"
 	// from "column &@ keyword1 OR column &@ keyword2 OR ...".
@@ -6140,7 +6140,7 @@ PGrnSearchBuildCondition(Relation index, ScanKey key, PGrnSearchData *data)
 	}
 	if (PGrnSearchIsMatchInCondition(key))
 	{
-		PGrnSearchBuildConditionMatchIn(key);
+		PGrnSearchSetMatchInStrategy(key);
 	}
 
 	if (key->sk_strategy == PGrnMatchFTSConditionStrategyV2Number ||
