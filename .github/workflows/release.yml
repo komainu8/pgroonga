@@ -7,17 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Download artifacts
-        run: |
-          run_id=18032601008
-          gh run download ${run_id} \
-          --dir release-artifacts \
-          --pattern "release-*" \
-          --repo ${GITHUB_REPOSITORY}
-          pwd
-          ls -al
-        env:
-          GH_TOKEN: ${{ github.token }}
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
@@ -50,6 +39,17 @@ jobs:
           echo '```' | tee -a release-note.md
           pwd
           ls -al
+      - name: Download artifacts
+        run: |
+          run_id=18032601008
+          gh run download ${run_id} \
+          --dir release-artifacts \
+          --pattern "release-*" \
+          --repo ${GITHUB_REPOSITORY}
+          pwd
+          ls -al
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Publish
         run: |
           title=$(head -n1 release-note.md | sed -e 's/^## //')
