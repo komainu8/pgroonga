@@ -9,16 +9,11 @@ jobs:
     steps:
       - name: Download artifacts
         run: |
-          workflows=(package.yml windows.yml)
-          for workflow in "${workflows[@]}"; do
-            run_id=18032601008
-            gh run download ${run_id} \
-              --dir release-artifacts \
-              --pattern "release-*" \
-              --repo ${GITHUB_REPOSITORY}
-            pwd
-            ls -al
-          done
+          run_id=18032601008
+          gh run download ${run_id} \
+          --dir release-artifacts \
+          --pattern "release-*" \
+          --repo ${GITHUB_REPOSITORY}
           pwd
           ls -al
         env:
