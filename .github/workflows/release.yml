@@ -8,8 +8,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Download artifacts
-        if: |
-          github.ref_type == 'tag'
         run: |
           workflows=(package.yml windows.yml)
           for workflow in "${workflows[@]}"; do
@@ -77,8 +75,6 @@ jobs:
           pwd
           ls -al
       - name: Publish
-        if: |
-          github.ref_type == 'tag'
         run: |
           title=$(head -n1 release-note.md | sed -e 's/^## //')
           tail -n +2 release-note.md > release-note-without-version.md
