@@ -1,11 +1,6 @@
 name: Release
 on:
   push:
-    tags:
-      - "*"
-  pull_request:
-    paths:
-      - ".github/workflows/release.yml"
 jobs:
   github:
     name: GitHub
@@ -42,7 +37,11 @@ jobs:
               --dir release-artifacts \
               --pattern "release-*" \
               --repo ${GITHUB_REPOSITORY}
+            pwd
+            ls -al
           done
+          pwd
+          ls -al
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/checkout@v5
@@ -75,17 +74,16 @@ jobs:
           echo "\$ ${command_line}" | tee -a release-note.md
           ${command_line} | tee -a release-note.md
           echo '```' | tee -a release-note.md
+          pwd
+          ls -al
       - name: Publish
         if: |
           github.ref_type == 'tag'
         run: |
           title=$(head -n1 release-note.md | sed -e 's/^## //')
           tail -n +2 release-note.md > release-note-without-version.md
-          gh release create ${GITHUB_REF_NAME} \
-            --discussion-category Releases \
-            --notes-file release-note-without-version.md \
-            --repo ${GITHUB_REPOSITORY} \
-            --title "${title}" \
-            release-artifacts/*/*
+          pwd
+          ls -al
+          ls -al release-artifacts/
         env:
           GH_TOKEN: ${{ github.token }}
