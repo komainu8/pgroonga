@@ -11,26 +11,7 @@ jobs:
         run: |
           workflows=(package.yml windows.yml)
           for workflow in "${workflows[@]}"; do
-            run_id=""
-            while true; do
-              echo "Waiting for run to start ${workflow}..."
-              run_id=$(gh run list \
-                         --branch ${GITHUB_REF_NAME} \
-                         --jq '.[].databaseId' \
-                         --json databaseId \
-                         --limit 1 \
-                         --repo ${GITHUB_REPOSITORY} \
-                         --workflow ${workflow})
-              if [ -n "${run_id}" ]; then
-                break
-              fi
-              sleep 300
-            done
-            gh run watch \
-              --exit-status \
-              --interval 300 \
-              --repo ${GITHUB_REPOSITORY} \
-              ${run_id}
+            run_id=18032601008
             gh run download ${run_id} \
               --dir release-artifacts \
               --pattern "release-*" \
