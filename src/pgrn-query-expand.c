@@ -564,7 +564,8 @@ pgroonga_query_expand(PG_FUNCTION_ARGS)
 												currentData.snapshot,
 												NULL,
 												nKeys,
-												nOrderBys);
+												nOrderBys,
+												0);
 		currentData.slot = table_slot_create(currentData.table, NULL);
 	}
 	else

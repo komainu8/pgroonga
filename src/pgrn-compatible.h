@@ -114,7 +114,8 @@ pgrn_index_beginscan(Relation heapRelation,
 					 void *instrument,
 #endif
 					 int nKeys,
-					 int nOrderBys)
+					 int nOrderBys,
+					 uint32 flags)
 {
 
 	return index_beginscan(heapRelation,
@@ -124,7 +125,13 @@ pgrn_index_beginscan(Relation heapRelation,
 						   instrument,
 #endif
 						   nKeys,
-						   nOrderBys);
+#if PG_VERSION_NUM >= 190000
+						   nOrderBys,
+						   flags
+#else
+						   nOrderBys
+#endif
+	);
 }
 
 #if PG_VERSION_NUM >= 180000
