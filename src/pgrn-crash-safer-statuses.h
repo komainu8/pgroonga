@@ -8,6 +8,8 @@
 #include <miscadmin.h>
 #include <port/atomics.h>
 #include <storage/shmem.h>
+#include <storage/lwlock.h>
+#include <storage/ipc.h>
 
 #include <signal.h>
 
@@ -19,6 +21,46 @@ typedef struct pgrn_crash_safer_statuses_entry
 	sig_atomic_t flushing;
 	pg_atomic_uint32 nUsingProcesses;
 } pgrn_crash_safer_statuses_entry;
+
+static HTAB *pgrn_crash_safer_statuses = NULL;
+#ifdef PGRN_HAVE_SHMEM_REQUEST_HOOK
+static shmem_request_hook_type PreviousShmemRequestHook = NULL;
+static shmem_startup_hook_type PreviousShmemStartupHook = NULL;
+static const int max_statuses_entry = 32;
+static const int min_statuses_entry = 1;
+static const char *LWLockTrancheName = "pgroonga-crash-safer: lwlock tranche";
+
+static void
+pgrn_shmem_request_hook()
+{
+	if (PreviousShmemRequestHook)
+		PreviousShmemRequestHook();
+
+	RequestAddinShmemSpace(hash_estimate_size(
+		max_statuses_entry, sizeof(pgrn_crash_safer_statuses_entry)));
+	RequestNamedLWLockTranche(LWLockTrancheName, 1);
+}
+
+static void
+pgrn_shmem_startup_hook()
+{
+	if (PreviousShmemStartupHook)
+		PreviousShmemStartupHook();
+
+	const char *name = "pgrn-crash-safer-statuses";
+	HASHCTL info;
+	int flags;
+	info.keysize = sizeof(uint64);
+	info.entrysize = sizeof(pgrn_crash_safer_statuses_entry);
+	flags = HASH_ELEM | HASH_FUNCTION;
+	pgrn_crash_safer_statuses =
+		ShmemInitHash(name,
+					  min_statuses_entry,
+					  max_statuses_entry /* TODO: configurable */,
+					  &info,
+					  flags);
+}
+#endif
 
 static inline uint32
 pgrn_crash_safer_statuses_hash(const void *key, Size keysize)
@@ -34,14 +76,7 @@ pgrn_crash_safer_statuses_hash(const void *key, Size keysize)
 static inline HTAB *
 pgrn_crash_safer_statuses_get(void)
 {
-	const char *name = "pgrn-crash-safer-statuses";
-	HASHCTL info;
-	int flags;
-	info.keysize = sizeof(uint64);
-	info.entrysize = sizeof(pgrn_crash_safer_statuses_entry);
-	info.hash = pgrn_crash_safer_statuses_hash;
-	flags = HASH_ELEM | HASH_FUNCTION;
-	return ShmemInitHash(name, 1, 32 /* TODO: configurable */, &info, flags);
+	return pgrn_crash_safer_statuses;
 }
 
 static inline pgrn_crash_safer_statuses_entry *
