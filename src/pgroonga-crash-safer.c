@@ -63,6 +63,48 @@ static int PGroongaCrashSaferMaxRecoveryThreads = 0;
 PGRN_DEFINE_LOG_LEVEL_ENTRIES(PGroongaCrashSaferLogLevelEntries);
 static const char *PGroongaCrashSaferLibraryName = "pgroonga_crash_safer";
 
+static HTAB *pgrn_crash_safer_statuses = NULL;
+#ifdef PGRN_HAVE_SHMEM_REQUEST_HOOK
+static shmem_request_hook_type PreviousShmemRequestHook = NULL;
+static shmem_startup_hook_type PreviousShmemStartupHook = NULL;
+static const int max_statuses_entry = 32;
+static const int min_statuses_entry = 1;
+static const char *LWLockTrancheName = "pgroonga-crash-safer: lwlock tranche";
+
+#	include <storage/lwlock.h>
+static void
+pgrn_shmem_request_hook()
+{
+	if (PreviousShmemRequestHook)
+		PreviousShmemRequestHook();
+
+	RequestAddinShmemSpace(hash_estimate_size(
+		max_statuses_entry, sizeof(pgrn_crash_safer_statuses_entry)));
+	RequestNamedLWLockTranche(LWLockTrancheName, 1);
+}
+
+static void
+pgrn_shmem_start_hook()
+{
+	if (PreviousShmemStartupHook)
+		PreviousShmemStartupHook();
+
+	const char *name = "pgrn-crash-safer-statuses";
+	HASHCTL info;
+	int flags;
+	info.keysize = sizeof(uint64);
+	info.entrysize = sizeof(pgrn_crash_safer_statuses_entry);
+	info.hash = pgrn_crash_safer_statuses_hash;
+	flags = HASH_ELEM | HASH_FUNCTION;
+	pgrn_crash_safer_statuses =
+		ShmemInitHash(name,
+					  min_statuses_entry,
+					  max_statuses_entry /* TODO: configurable */,
+					  &info,
+					  flags);
+}
+#endif
+
 static uint32_t
 pgroonga_crash_safer_get_thread_limit(void *data)
 {
@@ -869,6 +911,14 @@ _PG_init(void)
 
 	if (!process_shared_preload_libraries_in_progress)
 		return;
+
+#ifdef PGRN_HAVE_SHMEM_REQUEST_HOOK
+	PreviousShmemRequestHook = shmem_request_hook;
+	shmem_request_hook = pgrn_shmem_request_hook;
+
+	PreviousShmemStartupHook = shmem_startup_hook;
+	shmem_startup_hook = pgrn_shmem_startup_hook;
+#endif
 
 #ifdef PGRN_SUPPORT_WAL_RESOURCE_MANAGER
 	/* Use pgroonga-wal-resource-manager for crash safe on standby. */
