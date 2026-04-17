@@ -84,7 +84,7 @@ pgrn_shmem_request_hook()
 }
 
 static void
-pgrn_shmem_start_hook()
+pgrn_shmem_startup_hook()
 {
 	if (PreviousShmemStartupHook)
 		PreviousShmemStartupHook();
