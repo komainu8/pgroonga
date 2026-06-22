@@ -17,6 +17,7 @@ RUN \
   dnf update -y && \
   dnf install -y ${quiet} \
     https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm \
+    https://packages.apache.org/artifactory/arrow/almalinux/8/apache-arrow-release-latest.rpm \
     epel-release && \
   sed -i'' -e 's/k$//g' /etc/yum.repos.d/pgdg-12.repo && \
   dnf module -y ${quiet} disable postgresql && \
