@@ -18,7 +18,7 @@ RUN \
   dnf install -y ${quiet} \
     https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm \
     epel-release && \
-  sed -i'' -e 's/k$//g' /etc/yum.repos.d/pgdg-redhat-all.repo && \
+  sed -i'' -e 's/k$//g' /etc/yum.repos.d/pgdg-12.repo && \
   dnf module -y ${quiet} disable postgresql && \
   dnf groupinstall -y ${quiet} "Development Tools" && \
   dnf install --enablerepo=powertools -y ${quiet} \
