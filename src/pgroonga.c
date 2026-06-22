@@ -5194,11 +5194,6 @@ pgroonga_beginscan(Relation index, int nKeys, int nOrderBys)
 
 	scan->opaque = so;
 
-	if (processSharedData)
-	{
-		processSharedData->progressFlags = 0;
-	}
-
 	PGRN_TRACE_LOG_EXIT();
 
 	return scan;
