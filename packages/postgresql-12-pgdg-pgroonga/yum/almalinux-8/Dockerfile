@@ -3,16 +3,17 @@ FROM ${FROM}
 
 ARG DEBUG
 
-RUN \
-  quiet=$([ "${DEBUG}" = "yes" ] || echo "--quiet") && \
-  cat << EOF > /etc/yum.repos.d/pgdg-12.repo \
+RUN <<EOF cat > /etc/yum.repos.d/pgdg-12.repo
 [pgdg11-archive]
 name=PostgreSQL 12 RPMs for RHEL/Rocky Linux/AlmaLinux 8
 baseurl=https://yum-archive.postgresql.org/12/redhat/rhel-8-x86_64
 enabled=1
 gpgcheck=1
 gpgkey=https://yum.postgresql.org/keys/PGDG-RPM-GPG-KEY-RHEL
-  EOF && \
+EOF
+
+RUN \
+  quiet=$([ "${DEBUG}" = "yes" ] || echo "--quiet") && \
   dnf update -y && \
   dnf install -y ${quiet} \
     https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm \
