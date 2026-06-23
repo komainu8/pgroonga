@@ -58,6 +58,9 @@ case ${os} in
     ;;
 esac
 
+packages_dir=/host/repositories/${os}/${major_version}/x86_64/Packages
+pgroonga_package=$(basename $(ls ${packages_dir}/*-pgroonga-*.rpm | head -n1) | \
+                     sed -e 's/-pgroonga-.*$/-pgroonga/g')
 postgresql_version=$(echo ${pgroonga_package} | grep -E -o '[0-9.]+')
 case ${postgresql_version} in
   12)
@@ -77,11 +80,6 @@ echo "::endgroup::"
 
 
 echo "::group::Install built packages"
-
-packages_dir=/host/repositories/${os}/${major_version}/x86_64/Packages
-
-pgroonga_package=$(basename $(ls ${packages_dir}/*-pgroonga-*.rpm | head -n1) | \
-                     sed -e 's/-pgroonga-.*$/-pgroonga/g')
 
 ${DNF} install -y postgresql${postgresql_version}-contrib
 ${DNF} install -y ${packages_dir}/*.rpm
