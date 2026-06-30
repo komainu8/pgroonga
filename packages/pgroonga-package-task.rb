@@ -18,8 +18,10 @@ class GenericPGroongaPackageTask < PackagesGroongaOrgPackageTask
   end
 
   private
-  def latest_groonga_version
-    @latest_groonga_version ||= Helper.detect_latest_groonga_version
+  # We use a fixed Groonga version for maintenance in the maintenance/3.2.2 branch.
+  # This is because Groonga was at version 14.0.6 when 3.2.2 was built.
+  def maintenance_groonga_version
+    "v14.0.6"
   end
 
   def top_directory
@@ -74,7 +76,7 @@ class GenericPGroongaPackageTask < PackagesGroongaOrgPackageTask
   def apt_expand_variable(key)
     case key
     when "GROONGA_VERSION"
-      latest_groonga_version
+      maintenance_groonga_version
     else
       nil
     end
@@ -87,7 +89,7 @@ class GenericPGroongaPackageTask < PackagesGroongaOrgPackageTask
     when "PG_PACKAGE_VERSION"
       @postgresql_package_version
     when "GROONGA_VERSION"
-      latest_groonga_version
+      maintenance_groonga_version
     else
       super
     end
