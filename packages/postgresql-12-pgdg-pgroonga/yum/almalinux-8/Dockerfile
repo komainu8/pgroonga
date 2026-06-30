@@ -21,8 +21,9 @@ RUN \
   dnf module -y ${quiet} disable postgresql && \
   dnf groupinstall -y ${quiet} "Development Tools" && \
   dnf install --enablerepo=powertools -y ${quiet} \
+    arrow16-libs-16.1.0-1.el8.x86_64 \
     ccache \
-    groonga-devel \
+    groonga-devel-14.0.6-1.el8.x86_64 \
     llvm-toolset \
     llvm-devel \
     msgpack-devel \
