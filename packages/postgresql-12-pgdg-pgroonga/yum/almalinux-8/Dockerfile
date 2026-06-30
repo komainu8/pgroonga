@@ -16,12 +16,12 @@ RUN \
   quiet=$([ "${DEBUG}" = "yes" ] || echo "--quiet") && \
   dnf install -y ${quiet} \
     https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm \
+    https://packages.apache.org/artifactory/arrow/almalinux/8/apache-arrow-release-latest.rpm \
     epel-release && \
   sed -i'' -e 's/k$//g' /etc/yum.repos.d/pgdg-12.repo && \
   dnf module -y ${quiet} disable postgresql && \
   dnf groupinstall -y ${quiet} "Development Tools" && \
   dnf install --enablerepo=powertools -y ${quiet} \
-    arrow16-libs-16.1.0-1.el8.x86_64 \
     ccache \
     groonga-devel-14.0.6-1.el8.x86_64 \
     llvm-toolset \
