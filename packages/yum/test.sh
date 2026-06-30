@@ -68,6 +68,20 @@ packages_dir=/host/repositories/${os}/${major_version}/x86_64/Packages
 pgroonga_package=$(basename $(ls ${packages_dir}/*-pgroonga-*.rpm | head -n1) | \
                      sed -e 's/-pgroonga-.*$/-pgroonga/g')
 postgresql_version=$(echo ${pgroonga_package} | grep -E -o '[0-9.]+')
+case ${postgresql_version} in
+  12)
+    cat <<EOF >> /etc/yum.repos.d/pgdg-12.repo
+[pgdg12-archive]
+name=PostgreSQL 12 RPMs for RHEL/Rocky Linux/AlmaLinux 8
+baseurl=https://yum-archive.postgresql.org/12/redhat/rhel-8-x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.postgresql.org/keys/PGDG-RPM-GPG-KEY-RHEL
+EOF
+    ;;
+  *)
+    ;;
+esac
 
 ${DNF} install -y postgresql${postgresql_version}-contrib
 ${DNF} install -y ${packages_dir}/*.rpm
